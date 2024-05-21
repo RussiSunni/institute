@@ -3,6 +3,7 @@ import ProfileDetails from '../components/ProfileDetails.vue';
 import Settings from '../components/Settings.vue';
 import BulkQuestionsUpload from '../components/BulkQuestionsUpload.vue';
 import AutoGenerateSources from '../components/AutoGenerateSources.vue';
+import SettingNavColumn from '../components/SettingNavColumn.vue';
 // Import the store.
 import { useUserDetailsStore } from '../../stores/UserDetailsStore';
 import { RouterLink } from 'vue-router';
@@ -15,14 +16,18 @@ export default {
         };
     },
     data() {
-        return {};
+        return {
+            activeSetting: 'skill'
+        };
     },
     components: {
         ProfileDetails,
         Settings,
         BulkQuestionsUpload,
-        AutoGenerateSources
+        AutoGenerateSources,
+        SettingNavColumn
     },
+
     methods: {
         CheckMCQuestions() {
             console.log('test');
@@ -43,6 +48,12 @@ export default {
     <!-------------------------------------->
     <!-------- App Settings Section -------->
     <!-------------------------------------->
+    <div class="d-flex container mt-3">
+        <!--- === Setting Navigate Column === -->
+        <SettingNavColumn :activeSetting="activeSetting" />
+        <!--- === Setting Content Will Change Dynamically Base On Setting Nav === --->
+        <div></div>
+    </div>
 </template>
 
 <style>
