@@ -1,6 +1,6 @@
 <script>
 import ProfileDetails from '../components/ProfileDetails.vue';
-import Settings from '../components/Settings.vue';
+import SkillSetting from '../components/settingPages/SkillSetting.vue';
 import BulkQuestionsUpload from '../components/BulkQuestionsUpload.vue';
 import AutoGenerateSources from '../components/AutoGenerateSources.vue';
 import SettingNavColumn from '../components/SettingNavColumn.vue';
@@ -22,7 +22,7 @@ export default {
     },
     components: {
         ProfileDetails,
-        Settings,
+        SkillSetting,
         BulkQuestionsUpload,
         AutoGenerateSources,
         SettingNavColumn
@@ -48,11 +48,32 @@ export default {
     <!-------------------------------------->
     <!-------- App Settings Section -------->
     <!-------------------------------------->
-    <div class="d-flex container mt-3">
+    <div
+        v-if="userDetailsStore.role == 'admin'"
+        class="d-flex justify-content-between container mt-3 pb-3"
+    >
         <!--- === Setting Navigate Column === -->
-        <SettingNavColumn :activeSetting="activeSetting" />
+        <SettingNavColumn
+            :activeSetting="activeSetting"
+            @changeActiveNavItem="(value) => (activeSetting = value)"
+        />
+
         <!--- === Setting Content Will Change Dynamically Base On Setting Nav === --->
-        <div></div>
+        <div class="setting-content">
+            <!-- Settings Relate To Skill -->
+            <SkillSetting v-if="activeSetting == 'skill'" />
+            <!-- Link to Content Flags page --->
+            <section
+                class="container mt-1 px-3 px-lg-0 mb-5"
+                v-else-if="activeSetting == 'contentFlag'"
+            >
+                <hr />
+                <h1>Content Flags</h1>
+                <router-link class="btn green-btn mt-3" to="/content-flags"
+                    >Go to page</router-link
+                >
+            </section>
+        </div>
     </div>
 </template>
 
@@ -80,5 +101,14 @@ h1 {
 .green-btn:hover {
     background-color: #3eb3a3;
     color: white;
+}
+
+.setting-content {
+    width: 80%;
+    height: auto;
+    margin-left: 35px;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 </style>

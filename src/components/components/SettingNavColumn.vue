@@ -42,7 +42,7 @@ export default {
             :class="
                 activeSetting == item.value ? ' active-nav-item ' : ' nav-item'
             "
-            @click="activeSetting = item.value"
+            @click="$emit('changeActiveNavItem', item.value)"
         >
             {{ item.displayName }}
         </div>
