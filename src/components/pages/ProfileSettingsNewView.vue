@@ -1,6 +1,7 @@
 <script>
 import ProfileDetails from '../components/ProfileDetails.vue';
 import SkillSetting from '../components/settingPages/SkillSetting.vue';
+import ContentFlagSetting from '../components/settingPages/ContentFlagSetting.vue';
 import BulkQuestionsUpload from '../components/BulkQuestionsUpload.vue';
 import AutoGenerateSources from '../components/AutoGenerateSources.vue';
 import SettingNavColumn from '../components/SettingNavColumn.vue';
@@ -22,10 +23,11 @@ export default {
     },
     components: {
         ProfileDetails,
-        SkillSetting,
         BulkQuestionsUpload,
         AutoGenerateSources,
-        SettingNavColumn
+        SettingNavColumn,
+        SkillSetting,
+        ContentFlagSetting
     },
 
     methods: {
@@ -48,6 +50,7 @@ export default {
     <!-------------------------------------->
     <!-------- App Settings Section -------->
     <!-------------------------------------->
+
     <div
         v-if="userDetailsStore.role == 'admin'"
         class="d-flex flex-md-row flex-column justify-content-between container mt-3 pb-3"
@@ -63,16 +66,7 @@ export default {
             <!-- Settings Relate To Skill -->
             <SkillSetting v-if="activeSetting == 'skill'" />
             <!-- Link to Content Flags page --->
-            <section
-                class="container mt-1 px-3 px-lg-0 mb-5"
-                v-else-if="activeSetting == 'contentFlag'"
-            >
-                <hr />
-                <h1>Content Flags</h1>
-                <router-link class="btn green-btn mt-3" to="/content-flags"
-                    >Go to page</router-link
-                >
-            </section>
+            <ContentFlagSetting v-else-if="activeSetting == 'contentFlag'" />
         </div>
     </div>
 </template>
@@ -110,6 +104,14 @@ h1 {
     background-color: white;
     border-radius: 5px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+/* This class is shared use in child components */
+.explain-text {
+    font-size: 14px;
+    color: #475569;
+    font-family: 'Poppins', sans-serif;
+    margin-left: 2px;
 }
 
 /* Mobile Styling */

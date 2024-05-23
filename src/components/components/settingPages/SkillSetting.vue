@@ -117,6 +117,7 @@ export default {
         </div>
         <!-- ----- Skill filter relate setting ----- -->
         <div class="mt-5 setting-tile">Filter skill</div>
+        <div class="explain-text">Filtered skill based on it tag</div>
         <hr />
         <div class="d-flex flex-column mt-2 mb-2">
             <label
