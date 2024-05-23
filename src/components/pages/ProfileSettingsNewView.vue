@@ -50,7 +50,7 @@ export default {
     <!-------------------------------------->
     <div
         v-if="userDetailsStore.role == 'admin'"
-        class="d-flex justify-content-between container mt-3 pb-3"
+        class="d-flex flex-md-row flex-column justify-content-between md-container mt-3 pb-3"
     >
         <!--- === Setting Navigate Column === -->
         <SettingNavColumn
@@ -110,5 +110,14 @@ h1 {
     background-color: white;
     border-radius: 5px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+/* Mobile Styling */
+@media (max-width: 480px) {
+    .setting-content {
+        width: auto;
+        margin-left: 5px;
+        margin-right: 5px;
+    }
 }
 </style>

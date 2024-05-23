@@ -19,7 +19,8 @@ export default {
             filters: [],
             degradeDay: 0,
             questionPerQuiz: 0,
-            initialFilterArray: []
+            initialFilterArray: [],
+            showModal: false
         };
     },
     async created() {
@@ -44,20 +45,52 @@ export default {
             this.degradeDay = this.settingsStore.skillDegradationDays;
             this.questionPerQuiz = this.settingsStore.quizMaxQuestions;
             this.filters = this.initialFilterArray;
-            console.log('degrade day: ' + this.degradeDay);
         },
+
         async saveSetting() {
+            // ======== Update Skill Setting ========
             const requestOptions = {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    skill_degradation_days:
-                        this.settingsStore.skillDegradationDays,
-                    quiz_max_questions: this.settingsStore.quizMaxQuestions
+                    skill_degradation_days: this.degradeDay,
+                    quiz_max_questions: this.questionPerQuiz
                 })
             };
             var url = '/settings/edit';
             await fetch(url, requestOptions);
+
+            // ======== Update Skill Filter Setting ========
+            for (let i = 0; i < this.tagsStore.tagsList.length; i++) {
+                if (this.filters.includes(this.tagsStore.tagsList[i].id)) {
+                    this.tagsStore.tagsList[i].is_active = 'active';
+                } else {
+                    this.tagsStore.tagsList[i].is_active = 'inactive';
+                }
+            }
+
+            const requestOptionsFilter = {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    tags: this.tagsStore.tagsList
+                })
+            };
+            var url = '/tags/select';
+            await fetch(url, requestOptionsFilter);
+
+            // ======= Re-update initial value =========
+            await this.settingsStore.getSettings();
+            for (let i = 0; i < this.tagsStore.tagsList.length; i++) {
+                if (this.tagsStore.tagsList[i].is_active == 'active')
+                    this.filters.push(this.tagsStore.tagsList[i].id);
+            }
+            this.degradeDay = this.settingsStore.skillDegradationDays;
+            this.questionPerQuiz = this.settingsStore.quizMaxQuestions;
+            this.initialFilterArray = this.filters;
+
+            // turn off modal
+            this.showModal = false;
         }
     }
 };
@@ -68,7 +101,7 @@ export default {
         <!-- ----- Skill relate to student settings ----- -->
         <div class="setting-tile">Skill</div>
         <hr />
-        <div class="d-flex flex-row mt-3 align-items-center">
+        <div class="d-flex flex-row mt-3align-items-center">
             <div class="skill-label">
                 Time for student skills to degrade (in days):
             </div>
@@ -76,7 +109,7 @@ export default {
                 <input type="number" v-model="degradeDay" />
             </div>
         </div>
-        <div class="d-flex flex-row mb-3 align-items-center">
+        <div class="d-flex flex-row mb-3 align-items-center mt-3">
             <div class="skill-label">Max number of questions per quiz:</div>
             <div class="input-text">
                 <input type="number" v-model="questionPerQuiz" />
@@ -99,8 +132,47 @@ export default {
 
         <!-- ----- Action Button Rows ----- -->
         <div class="d-flex flex-row-reverse mt-5 gap-2">
-            <div class="btn green-btn">Save</div>
-            <div class="btn red-btn" @click="cancelSetting()">Cancel</div>
+            <div
+                b-on-hover
+                title="apply changes "
+                class="btn green-btn"
+                @click="showModal = true"
+            >
+                Save
+            </div>
+            <div
+                b-on-hover
+                title="return to initial setting"
+                class="btn red-btn"
+                @click="cancelSetting()"
+            >
+                Cancel
+            </div>
+        </div>
+    </div>
+    <!-- The Modal -->
+    <div v-if="showModal">
+        <div id="myModal" class="modal">
+            <!-- Modal content -->
+            <div class="modal-content">
+                <p>Are you sure you want to apply these settings ?</p>
+                <div class="d-flex flex-row-reverse gap-2">
+                    <button
+                        type="button"
+                        class="btn green-btn"
+                        @click="saveSetting()"
+                    >
+                        Yes
+                    </button>
+                    <button
+                        type="button"
+                        class="btn btn-dark red-btn"
+                        @click="showModal = false"
+                    >
+                        No
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -262,6 +334,45 @@ export default {
 }
 /* End of check box styling */
 
+#add-resource-column {
+    padding-right: 0px !important;
+    margin-right: 0px !important;
+}
+
+/* Modal Styling */
+.modal {
+    display: block;
+    /* Hidden by default */
+    position: fixed;
+    /* Stay in place */
+    z-index: 1;
+    /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%;
+    /* Full width */
+    height: 100%;
+    /* Full height */
+    overflow: auto;
+    /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0);
+    /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 300px;
+    /* Could be more or less, depending on screen size */
+}
+/* End of modal styling */
+
 /* Text Input Styling */
 .input-text input {
     border: #c1b3eb 1px solid;
@@ -275,5 +386,16 @@ export default {
     margin-bottom: 5px;
     margin-left: auto;
     margin-right: 10px;
+}
+
+/* Mobile Styling */
+@media (max-width: 480px) {
+    .skill-label {
+        text-align: left;
+    }
+
+    .input-text {
+        width: 20%;
+    }
 }
 </style>
