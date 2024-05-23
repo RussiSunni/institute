@@ -14,7 +14,7 @@ const conn = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: 'C0ll1ns1n5t1tut32022',
-    // password: 'password',
+    //password: 'password',
     database: 'skill_tree'
 });
 
@@ -463,6 +463,7 @@ router.post('/make-mastered/:userId', (req, res, next) => {
                         }
                         let unnestedList = results;
 
+                        // Recursive function.
                         makeMastered(req.params.userId, skill);
 
                         function makeMastered(userId, skill) {
@@ -560,12 +561,12 @@ router.post('/make-mastered/:userId', (req, res, next) => {
                                                 subSkills[i]
                                             );
                                         }
-
-                                        // Check if domain is now mastered.
-                                        FindFirstAncestorDomain(
-                                            skill,
-                                            req.params.userId
-                                        );
+                                        // TODO: FIX BELOW. NOT WORKING
+                                        // // Check if domain is now mastered.
+                                        // FindFirstAncestorDomain(
+                                        //     skill,
+                                        //     req.params.userId
+                                        // );
                                     }
                                     // If this skill is a sub skill.
                                     else {

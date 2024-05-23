@@ -119,7 +119,7 @@ export default {
                 body: JSON.stringify({
                     content_type: 'skill',
                     content_id: this.skill.id,
-                    student_id: this.userDetailsStore.userId
+                    user_id: this.userDetailsStore.userId
                 })
             };
             var url = '/content-flags/add';
@@ -148,7 +148,9 @@ export default {
                 "
                 class="row mt-3"
             >
-                <div class="d-flex flex-row-reverse align-items-end">
+                <div
+                    class="d-flex flex-row-reverse align-items-end mb-2 mb-md-0"
+                >
                     <!-- Unlock Skill Button -->
                     <button
                         v-if="skill.type == 'domain'"
@@ -206,9 +208,7 @@ export default {
                 </div>
                 <!-- Skill name and skill description -->
                 <div class="d-flex flex-column">
-                    <div class="skill-name">
-                        {{ skill.name }}
-                    </div>
+                    <div class="skill-name">{{ skill.name }}</div>
                     <!-- Description only seen by admins -->
                     <div
                         v-if="userDetailsStore.role == 'admin'"
@@ -227,6 +227,21 @@ export default {
                             class="border border-2 opacity-100"
                         />
                     </div>
+                </div>
+                <!-- Level -->
+                <div class="mt-3 d-flex flex-column">
+                    <div class="h1-tile">Level</div>
+                    <span v-if="skill.level == 'grade_school'"
+                        >Grade School</span
+                    >
+                    <span v-else-if="skill.level == 'middle_school'"
+                        >Middle School</span
+                    >
+                    <span v-else-if="skill.level == 'high_school'"
+                        >High School</span
+                    >
+                    <span v-else-if="skill.level == 'college'">College</span>
+                    <span v-else-if="skill.level == 'phd'">PHD</span>
                 </div>
                 <!-- Mastery Requirements -->
                 <div class="mt-3 d-flex flex-column">
@@ -369,13 +384,16 @@ export default {
                     </svg>
                     <p>Are you sure you want to flag this skill</p>
                 </div>
-                <div class="d-flex justify-content-between gap-2">
+                <div
+                    class="d-flex justify-content-lg-between justify-content-md-end justify-content-between gap-2"
+                >
                     <button
                         type="button"
-                        class="btn red-btn w-md-25"
+                        class="btn red-btn modal-btn"
                         @click="showModal = false"
                     >
                         <span class="d-none d-md-block"> No </span>
+                        <!-- Tick Icon ONLY show when in Phone View -->
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 512 512"
@@ -391,10 +409,11 @@ export default {
                     </button>
                     <button
                         type="button"
-                        class="btn green-btn w-md-25"
+                        class="btn green-btn modal-btn"
                         @click="flagSkill"
                     >
                         <span class="d-none d-md-block"> Yes </span>
+                        <!-- X icon Only show when in Phone View -->
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 512 512"
@@ -524,7 +543,6 @@ export default {
     font-family: 'Inter', sans-serif;
     font-weight: 600;
     font-size: 1rem;
-
     display: flex;
     align-items: center;
     justify-content: center;
@@ -617,12 +635,8 @@ export default {
     height: 20px !important;
 }
 
-/* View Specific On Tablet */
-@media (min-width: 577px) and (max-width: 1023px) {
-    #skill-info-container {
-        padding-left: 15px;
-        padding-right: 15px;
-    }
+.modal-btn {
+    width: 25%;
 }
 
 /* Specific phone view css */
@@ -668,11 +682,12 @@ export default {
         margin-top: 5px;
         font-size: 25px;
         text-align: center;
+        margin: 0px 5px;
     }
 
     .modal-content {
-        width: 95%;
-        margin-top: 85%;
+        margin-top: 100%;
+        width: 90%;
     }
 
     .skill-description {
@@ -685,12 +700,34 @@ export default {
         font-size: 20px;
         margin-left: 4px;
     }
+
+    .modal-btn {
+        width: fit-content;
+    }
 }
 
-h2 {
+/* ************************* */
+/* Tablet Styling */
+@media (min-width: 577px) and (max-width: 1023px) {
+    .modal-content {
+        margin-top: 60%;
+        width: 70%;
+    }
+
+    #skill-info-container {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .modal-btn {
+        width: fit-content;
+    }
+}
+
+/* h2 {
     color: #8f7bd6;
     font-family: 'Poppins', sans-serif;
     font-weight: 900;
     font-size: 1.75rem;
-}
+} */
 </style>
