@@ -156,20 +156,46 @@ export default {
             <!-- Modal content -->
             <div class="modal-content">
                 <p>Are you sure you want to apply these settings ?</p>
-                <div class="d-flex flex-row-reverse gap-2">
+                <div
+                    class="d-flex justify-content-md-end justify-content-between gap-2"
+                >
                     <button
                         type="button"
-                        class="btn green-btn"
-                        @click="saveSetting()"
+                        class="btn red-btn w-25"
+                        @click="showModal = false"
                     >
-                        Yes
+                        <span class="me-2 d-none d-md-flex"> No </span>
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 512 512"
+                            width="18"
+                            height="18"
+                            fill="white"
+                            class="d-md-none"
+                        >
+                            <path
+                                d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM175 175c9.4-9.4 24.6-9.4 33.9 0l47 47 47-47c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-47 47 47 47c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-47-47-47 47c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l47-47-47-47c-9.4-9.4-9.4-24.6 0-33.9z"
+                            />
+                        </svg>
                     </button>
                     <button
                         type="button"
-                        class="btn btn-dark red-btn"
-                        @click="showModal = false"
+                        class="btn green-btn w-25"
+                        @click="saveSetting()"
                     >
-                        No
+                        <span class="me-2 d-none d-md-flex"> Yes </span>
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 512 512"
+                            width="18"
+                            height="18"
+                            fill="white"
+                            class="d-md-none"
+                        >
+                            <path
+                                d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209L241 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L335 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z"
+                            />
+                        </svg>
                     </button>
                 </div>
             </div>
@@ -396,6 +422,11 @@ export default {
 
     .input-text {
         width: 20%;
+    }
+
+    .modal-content {
+        margin-top: 88%;
+        width: 95%;
     }
 }
 </style>

@@ -50,7 +50,7 @@ export default {
     <!-------------------------------------->
     <div
         v-if="userDetailsStore.role == 'admin'"
-        class="d-flex flex-md-row flex-column justify-content-between md-container mt-3 pb-3"
+        class="d-flex flex-md-row flex-column justify-content-between container mt-3 pb-3"
     >
         <!--- === Setting Navigate Column === -->
         <SettingNavColumn

@@ -74,22 +74,27 @@ export default {
             </span>
         </div>
         <!-- Navigate Items List -->
-        <div v-if="showDropDown" class="d-flex flex-column dropdown-base">
+        <Transition name="dropdown">
             <div
-                v-for="item in navItems"
-                :class="
-                    activeSetting == item.value
-                        ? ' active-nav-item '
-                        : ' nav-item'
-                "
-                @click="
-                    $emit('changeActiveNavItem', item.value);
-                    showDropDown = false;
-                "
+                v-if="showDropDown"
+                :class="'d-flex flex-column dropdown-base'"
             >
-                {{ item.displayName }}
+                <div
+                    v-for="item in navItems"
+                    :class="
+                        activeSetting == item.value
+                            ? ' active-nav-item '
+                            : ' nav-item'
+                    "
+                    @click="
+                        $emit('changeActiveNavItem', item.value);
+                        showDropDown = false;
+                    "
+                >
+                    {{ item.displayName }}
+                </div>
             </div>
-        </div>
+        </Transition>
     </div>
     <!-- Modal act as a veil when setting dropdown appear -->
     <div v-if="showDropDown" class="modal"></div>
@@ -221,6 +226,28 @@ export default {
     padding: 5px 10px;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
+}
+
+/* Dropdown Animation */
+
+@keyframes slide {
+    0% {
+        opacity: 0;
+        transform: scaleY(0);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scaleY(1);
+    }
+}
+.dropdown-enter-active {
+    transform-origin: top center;
+    animation: slide 0.2s;
+}
+.dropdown-leave-active {
+    transform-origin: top center;
+    animation: slide 0.2s reverse;
 }
 
 /* ====== End Of Drawer Button Styling ===== */
