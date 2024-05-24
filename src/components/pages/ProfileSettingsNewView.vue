@@ -5,6 +5,7 @@ import ContentFlagSetting from '../components/settingPages/ContentFlagSetting.vu
 import BulkQuestionsUpload from '../components/BulkQuestionsUpload.vue';
 import AutoGenerateSources from '../components/AutoGenerateSources.vue';
 import SettingNavColumn from '../components/SettingNavColumn.vue';
+import McQuestionSetting from '../components/settingPages/McQuestionSetting.vue';
 // Import the store.
 import { useUserDetailsStore } from '../../stores/UserDetailsStore';
 import { RouterLink } from 'vue-router';
@@ -27,7 +28,8 @@ export default {
         AutoGenerateSources,
         SettingNavColumn,
         SkillSetting,
-        ContentFlagSetting
+        ContentFlagSetting,
+        McQuestionSetting
     },
 
     methods: {
@@ -67,6 +69,8 @@ export default {
             <SkillSetting v-if="activeSetting == 'skill'" />
             <!-- Link to Content Flags page --->
             <ContentFlagSetting v-else-if="activeSetting == 'contentFlag'" />
+            <!-- Multiple questions relate setting -->
+            <McQuestionSetting v-else-if="activeSetting == 'mcQuestion'" />
         </div>
     </div>
 </template>
