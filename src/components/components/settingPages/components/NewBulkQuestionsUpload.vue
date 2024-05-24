@@ -121,8 +121,6 @@ export default {
 
 <template>
     <div class="container mt-3 pb-5 px-3 px-lg-0">
-        <hr />
-        <h1>Add MC Questions in Bulk</h1>
         <div class="row">
             <div class="col-sm-4">
                 <div v-if="!questionCSVFile">

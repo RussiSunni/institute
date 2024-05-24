@@ -1,5 +1,6 @@
 <script>
 import NewBulkQuestionsUpload from './components/NewBulkQuestionsUpload.vue';
+import NewCheckMcQuestion from './components/NewCheckMcQuestion.vue';
 
 export default {
     setup() {},
@@ -7,7 +8,8 @@ export default {
         return {};
     },
     components: {
-        NewBulkQuestionsUpload
+        NewBulkQuestionsUpload,
+        NewCheckMcQuestion
     },
     async created() {},
     methods: {}
@@ -16,13 +18,16 @@ export default {
 
 <template>
     <div class="container">
-        <div class="page-tile d-md-flex d-none">Multiple Choice Questions</div>
-        <div class="d-md-none page-tile">MC Questions</div>
+        <div class="setting-tile">Bulks Add MC Questions</div>
         <div class="explain-text">
-            Setting that relate to multiple choice question for skill
+            Add multiple choice questions via csv or text file
         </div>
         <hr />
         <NewBulkQuestionsUpload />
+        <div class="setting-tile mt-4">Check MC Questions</div>
+        <div class="explain-text">Check the mc question using chat-gpt</div>
+        <hr />
+        <NewCheckMcQuestion />
     </div>
 </template>
 

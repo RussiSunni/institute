@@ -248,13 +248,6 @@ export default {
     background-color: #cc3535;
 }
 
-.setting-tile {
-    font-size: 20px;
-    font-family: 'Poppins', sans-serif;
-    font-weight: 550;
-    color: #c1b3eb;
-}
-
 .skill-label {
     font-weight: 500;
     font-size: 0.938rem;

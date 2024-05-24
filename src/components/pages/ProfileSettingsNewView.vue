@@ -110,13 +110,22 @@ h1 {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-/* This class is shared use in child components */
+/* Classes that have shared use in child components */
 .explain-text {
     font-size: 14px;
     color: #475569;
     font-family: 'Poppins', sans-serif;
     margin-left: 2px;
 }
+
+.setting-tile {
+    font-size: 20px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 550;
+    color: #c1b3eb;
+}
+
+/* ---------------- ### ------------------- */
 
 /* Mobile Styling */
 @media (max-width: 480px) {
