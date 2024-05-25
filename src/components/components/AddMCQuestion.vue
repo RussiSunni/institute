@@ -140,7 +140,7 @@ export default {
             }
         },
         dragover(e) {
-            // have to prevent default in other to
+            // have to prevent default in other for this event to work
             e.preventDefault();
             this.isDragging = true;
         },
@@ -149,6 +149,7 @@ export default {
         },
         drop(e) {
             e.preventDefault();
+            // Manual toggle the file input when file is drop
             this.$refs.file.files = e.dataTransfer.files;
             this.onChange();
             this.isDragging = false;

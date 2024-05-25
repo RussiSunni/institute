@@ -7,7 +7,8 @@ export default {
             questionsArray: [],
             counter1: 0,
             counter2: 0,
-            incorrectlyFormattedQuestions: false
+            incorrectlyFormattedQuestions: false,
+            isDragging: false
         };
     },
     methods: {
@@ -114,15 +115,35 @@ export default {
                 this.filesArray = [];
                 this.questionsArray = [];
             });
+        },
+        // ----- Method relate to drag and drop files -----
+        dragover(e) {
+            // have to prevent default in other for this event to work
+            e.preventDefault();
+            this.isDragging = true;
+            console.log('drag over');
+        },
+        dragleave() {
+            this.isDragging = false;
+        },
+        drop(e) {
+            e.preventDefault();
+            // Manual toggle the file input when file is drop
+
+            this.OnFileChange(e);
+
+            this.isDragging = false;
         }
+        // ----- ** ------
     }
 };
 </script>
 
 <template>
     <div class="container mt-3 pb-5 px-3 px-lg-0">
-        <div class="row">
-            <div class="col-sm-4">
+        <div class="d-flex flex-column">
+            <!-- Upload with input button -->
+            <div class="d-flex flex-column">
                 <div v-if="!questionCSVFile">
                     <input
                         class="form-control"
@@ -142,8 +163,35 @@ export default {
                         </button>
                     </p>
                 </div>
-                <button class="btn green-btn" @click="Submit()">Submit</button>
             </div>
+            <div>OR</div>
+            <div
+                class="dropzone-container mx-lg-3 my-2"
+                @dragover="dragover"
+                @dragleave="dragleave"
+                @drop="drop"
+                :style="isDragging && 'border-color: #8f7bd6;'"
+            >
+                <input
+                    type="file"
+                    multiple
+                    name="file"
+                    id="fileInput"
+                    class="hidden-input"
+                    @change="OnFileChange"
+                    ref="file"
+                    accept=".csv, .txt"
+                />
+                <label for="fileInput" class="file-label">
+                    <div v-if="isDragging">Release to drop files here.</div>
+                    <div v-else>
+                        Drop files here or
+                        <span id="click-here-label">click here</span> to upload
+                        CSV and TXT file.
+                    </div>
+                </label>
+            </div>
+            <button class="btn green-btn" @click="Submit()">Submit</button>
         </div>
     </div>
 </template>
@@ -165,5 +213,33 @@ export default {
 
 .green-btn:hover {
     background-color: #3eb3a3;
+}
+
+/** Drop Zone Styling */
+.dropzone-container {
+    padding: 4rem;
+    background: #f7fafc;
+    border: 1px solid #e2e8f0;
+    border: 2px dashed;
+    border-color: #9e9e9e;
+}
+
+.hidden-input {
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+}
+
+.file-label {
+    font-size: 20px;
+    display: block;
+    cursor: pointer;
+}
+
+#click-here-label {
+    text-decoration: underline;
+    font-weight: 500;
 }
 </style>
