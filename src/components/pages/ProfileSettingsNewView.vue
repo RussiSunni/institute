@@ -2,10 +2,9 @@
 import ProfileDetails from '../components/ProfileDetails.vue';
 import SkillSetting from '../components/settingPages/SkillSetting.vue';
 import ContentFlagSetting from '../components/settingPages/ContentFlagSetting.vue';
-import BulkQuestionsUpload from '../components/BulkQuestionsUpload.vue';
-import AutoGenerateSources from '../components/AutoGenerateSources.vue';
 import SettingNavColumn from '../components/SettingNavColumn.vue';
 import McQuestionSetting from '../components/settingPages/McQuestionSetting.vue';
+
 // Import the store.
 import { useUserDetailsStore } from '../../stores/UserDetailsStore';
 import { RouterLink } from 'vue-router';
@@ -24,8 +23,6 @@ export default {
     },
     components: {
         ProfileDetails,
-        BulkQuestionsUpload,
-        AutoGenerateSources,
         SettingNavColumn,
         SkillSetting,
         ContentFlagSetting,

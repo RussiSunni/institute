@@ -9,7 +9,10 @@ export default {
             counter2: 0,
             incorrectlyFormattedQuestions: false,
             isDragging: false,
-            files: []
+            files: [],
+            showWarningModal: false,
+            showSuccessModal: false,
+            showNormalModal: false
         };
     },
     methods: {
@@ -71,20 +74,9 @@ export default {
             reader.readAsText(file);
         },
         Submit() {
-            if (this.incorrectlyFormattedQuestions) {
-                // Let the user know they had some incorrectly formatted questions.
-                // Check if they want to continue.
-                if (
-                    !confirm(
-                        'Incorrectly formatted question were found. Only ' +
-                            this.questionsArray.length +
-                            ' questions will be uploaded. Continue?'
-                    )
-                ) {
-                    return;
-                }
-            }
-
+            // turn off all modal
+            this.showNormalModal = false;
+            this.showNormalModal = false;
             const questionArray = [];
             // For each question.
             for (let i = 0; i < this.questionsArray.length; i++) {
@@ -135,8 +127,18 @@ export default {
             this.OnFileChange(e);
 
             this.isDragging = false;
-        }
+        },
         // ----- ** ------
+        handleSubmit() {
+            /* Because user can upload right formatted question in file that have wrong format question ( ignore the wrong one)
+               So when user click submit we will show different modal based on state of incorrectlyFormattedQuestions
+            */
+            if (this.incorrectlyFormattedQuestions) {
+                this.showWarningModal = true;
+            } else {
+                this.showNormalModal = true;
+            }
+        }
     }
 };
 </script>
@@ -289,7 +291,7 @@ export default {
                     b-on
                     title="Upload Questions To Server"
                     class="btn green-btn"
-                    @click="Submit()"
+                    @click="handleSubmit"
                 >
                     Submit
                 </button>
@@ -297,7 +299,7 @@ export default {
         </div>
     </div>
     <!-- The Modal To Tell user How many question will get upload -->
-    <div v-if="showModal">
+    <div v-if="showWarningModal">
         <div id="myModal" class="modal">
             <!-- Modal content -->
             <div class="modal-content">
@@ -306,13 +308,47 @@ export default {
                     {{ this.questionsArray.length }} questions will be uploaded.
                     Continue?
                 </p>
-                <div style="display: flex; gap: 10px">
+
+                <div class="d-flex justify-content-between">
                     <button
                         type="button"
-                        class="btn btn-danger"
-                        @click="deletePost(this.resourceId)"
+                        class="btn red-btn modal-btn"
+                        @click="showWarningModal = false"
                     >
-                        Ok
+                        <div>Cancel</div>
+                    </button>
+                    <button
+                        type="button"
+                        class="btn green-btn modal-btn"
+                        @click="submit"
+                    >
+                        <div>Ok</div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- The modal to tell user that the submit operation is success -->
+    <div v-if="showNormalModal">
+        <div id="myModal" class="modal">
+            <!-- Modal content -->
+            <div class="modal-content">
+                <p>Submit question in files ?</p>
+
+                <div class="d-flex">
+                    <button
+                        type="button"
+                        class="btn green-btn modal-btn"
+                        @click="showNormalModal = false"
+                    >
+                        <div>Cancel</div>
+                    </button>
+                    <button
+                        type="button"
+                        class="btn green-btn modal-btn"
+                        @click="submit()"
+                    >
+                        <div>Ok</div>
                     </button>
                 </div>
             </div>
@@ -331,8 +367,8 @@ export default {
     line-height: 24px;
     display: flex;
     align-items: center;
+    justify-content: center;
     height: auto;
-    width: fit-content;
     margin-right: 5px;
 }
 
@@ -340,6 +376,22 @@ export default {
     background-color: #3eb3a3;
 }
 
+.red-btn {
+    background-color: #e24d4d;
+    color: white;
+    border: 1px solid #d33622;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.red-btn:hover {
+    background-color: #cc3535;
+    color: white;
+}
 /** Drop Zone Styling */
 .dropzone-container {
     padding: 4rem;
@@ -374,11 +426,57 @@ export default {
     border: 1px solid #a2a2a2;
 }
 
+/* ---  End Of Dropzone Styling  --- */
+
 #or-word {
     color: #9e9e9e;
     font-size: 16px;
     font-weight: 600;
 }
+
+/* +++ The  Modal Styling +++ */
+.modal {
+    display: block;
+    /* Hidden by default */
+    position: fixed;
+    /* Stay in place */
+    z-index: 1;
+    /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%;
+    /* Full width */
+    height: 100%;
+    /* Full height */
+    overflow: auto;
+    /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0);
+    /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Black w/ opacity */
+}
+
+#add-resource-column {
+    padding-right: 0px !important;
+    margin-right: 0px !important;
+}
+
+/* Modal Content/Box */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 600px;
+    /* Could be more or less, depending on screen size */
+}
+
+.modal-btn {
+    width: 80px !important;
+    text-align: center;
+}
+/* --- End of  modal styling --- */
 
 /* Mobile */
 @media (max-width: 480px) {
@@ -390,6 +488,14 @@ export default {
 
     .green-btn {
         margin-right: 0px;
+    }
+
+    .modal-btn {
+        width: 45px;
+    }
+
+    .modal-content {
+        width: 95%;
     }
 }
 </style>
