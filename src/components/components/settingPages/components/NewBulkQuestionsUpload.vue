@@ -5,6 +5,8 @@ export default {
             questionCSVFile: '',
             filesArray: [],
             questionsArray: [],
+            // store the question that will not get upload
+            wrongFormatQuestionArray: [],
             counter1: 0,
             counter2: 0,
             incorrectlyFormattedQuestions: false,
@@ -51,6 +53,8 @@ export default {
                     if (CSVArray[i].split('|').length != 9) {
                         this.incorrectlyFormattedQuestions = true;
                         CSVArray.splice(i, 1);
+                        // store it in an array for later use
+                        this.wrongFormatQuestionArray.push(CSVArray[i]);
                     }
                 }
                 // Check for error where the skill ID is not an integer.
@@ -76,7 +80,7 @@ export default {
         Submit() {
             // turn off all modal
             this.showNormalModal = false;
-            this.showNormalModal = false;
+            this.showWarningModal = false;
             const questionArray = [];
             // For each question.
             for (let i = 0; i < this.questionsArray.length; i++) {
