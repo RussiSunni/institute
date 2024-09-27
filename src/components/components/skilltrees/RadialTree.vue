@@ -2,6 +2,8 @@
 // Import the stores.
 import { useUserDetailsStore } from '../../../stores/UserDetailsStore';
 import { useSkillTreeStore } from '../../../stores/SkillTreeStore';
+import SliderControl from './SliderControl.vue';
+import JoystickControl from './JoystickControl.vue';
 // Nested component.
 import SkillPanel from './../SkillPanel.vue';
 
@@ -65,7 +67,9 @@ export default {
         };
     },
     components: {
-        SkillPanel
+        SkillPanel,
+        SliderControl,
+        JoystickControl
     },
     async mounted() {
         if (this.skillTreeStore.userSkillsSubSkillsSeparate.length == 0) {
@@ -95,7 +99,9 @@ export default {
                 .scaleExtent([0.05, 8])
                 .on('zoom', ({ transform }) => {
                     this.currentZoom = transform.k;
+                    this.scale = transform.k;
                     this.zoomed(transform);
+                    this.$refs.sliderControl.changeGradientBG();
                 });
             d3.select(this.context.canvas).call(this.d3Zoom);
 
@@ -760,6 +766,23 @@ export default {
                         .translate(this.width / 2, this.height / 2)
                         .scale(0.08)
                 );
+            this.$refs.sliderControl.showScaleLabel();
+        },
+        // programmatic d3 zoom
+        zoomInD3(scale, panX, panY) {
+            d3.select(this.context.canvas).call(
+                this.d3Zoom.transform,
+                d3.zoomIdentity.translate(this.width / 2 , this.height / 2).scale(scale)
+            );
+            this.$refs.sliderControl.showScaleLabel();
+        },
+        panInD3() {
+            d3.select(this.context.canvas).call(
+                this.d3Zoom.transform,
+                d3.zoomIdentity
+                    .translate(this.panX, this.panY)
+                    .scale(this.currentZoom)
+            );
         }
     }
 };
@@ -784,11 +807,12 @@ export default {
             :style="{ top: `${yPos}px`, left: `${xPos}px` }"
             class="click-animation"
         ></div>
-        <canvas id="canvas" width="1500" height="1500"></canvas>
+        <canvas id="canvas" width="1500" height="1500" ref="canvas"></canvas>
         <canvas id="hidden-canvas" width="1500" height="1500"></canvas>
         <div id="SVGskilltree"></div>
-
+        <SliderControl ref="sliderControl" />
         <div id="sidepanel-backdrop"></div>
+        <JoystickControl />
     </div>
 </template>
 
