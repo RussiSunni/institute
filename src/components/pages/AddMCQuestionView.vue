@@ -14,8 +14,10 @@ export default {
                 incorrectAnswer2: '',
                 incorrectAnswer3: '',
                 incorrectAnswer4: '',
+                incorrectAnswer5: '',
                 question: '',
-                explanation: ''
+                explanation: '',
+                isRandomOrder: true
             },
             // validate object
             validate: {
@@ -27,8 +29,10 @@ export default {
                 incorrectAnswer2: false,
                 incorrectAnswer3: false,
                 incorrectAnswer4: false,
+                incorrectAnswer5: false,
                 explanation: false
-            }
+            },
+            isCorrect: 1
         };
     },
     methods: {
@@ -73,21 +77,29 @@ export default {
                 this.validate.validated = true;
             }
 
-            if (
-                this.question.incorrectAnswer3 === '' ||
-                this.question.incorrectAnswer3 === null
-            ) {
-                this.validate.incorrectAnswer3 = true;
-                this.validate.validated = true;
-            }
+            // if (
+            //     this.question.incorrectAnswer3 === '' ||
+            //     this.question.incorrectAnswer3 === null
+            // ) {
+            //     this.validate.incorrectAnswer3 = true;
+            //     this.validate.validated = true;
+            // }
 
-            if (
-                this.question.incorrectAnswer4 === '' ||
-                this.question.incorrectAnswer4 === null
-            ) {
-                this.validate.incorrectAnswer4 = true;
-                this.validate.validated = true;
-            }
+            // if (
+            //     this.question.incorrectAnswer4 === '' ||
+            //     this.question.incorrectAnswer4 === null
+            // ) {
+            //     this.validate.incorrectAnswer4 = true;
+            //     this.validate.validated = true;
+            // }
+
+            // if (
+            //     this.question.incorrectAnswer5 === '' ||
+            //     this.question.incorrectAnswer5 === null
+            // ) {
+            //     this.validate.incorrectAnswer5 = true;
+            //     this.validate.validated = true;
+            // }
 
             if (
                 this.question.explanation === '' ||
@@ -98,6 +110,8 @@ export default {
             }
 
             if (this.validate.validated) {
+                console.log('test');
+                console.log(typeof this.question.incorrectAnswer1);
                 return; // stop the submit operation if there something violated validate condition
             }
 
@@ -117,13 +131,13 @@ export default {
                 })
             };
             var url = '/questions/mc-questions/add';
-            fetch(url, requestOptions)
-                .then(() => {
-                    alert('Question added');
-                })
-                .then(() => {
-                    this.$router.go(-1);
-                });
+            // fetch(url, requestOptions)
+            //     .then(() => {
+            //         alert('Question added');
+            //     })
+            //     .then(() => {
+            //         this.$router.go(-1);
+            //     });
         }
     }
 };
@@ -181,97 +195,276 @@ export default {
                             "
                             class="form-validate"
                         >
-                            please enter a question content !
+                            please enter a question !
                         </div>
                     </div>
+
+                    <!-- Answer Option 1 -->
+                    <label class="form-label"
+                        ><span v-if="isCorrect == 1">Correct answer</span>
+                        <span v-else>Incorrect answer</span>
+                    </label>
+                    <!-- isCorrect? -->
+                    <input
+                        class="ms-2 float-right"
+                        type="radio"
+                        v-model="isCorrect"
+                        value="1"
+                    />
                     <div class="mb-3">
-                        <label class="form-label">Correct answer</label>
-                        <input
-                            v-model="question.correctAnswer"
-                            type="text"
-                            class="form-control"
-                        />
-                        <div
-                            v-if="
-                                validate.correctAnswer &&
-                                (question.correctAnswer === '' ||
-                                    question.correctAnswer === null)
-                            "
-                            class="form-validate"
-                        >
-                            please enter a correct answer !
+                        <!-- If correct -->
+                        <div v-if="isCorrect == 1">
+                            <input
+                                v-model="question.correctAnswer"
+                                type="text"
+                                class="form-control"
+                            />
+                            <div
+                                v-if="
+                                    validate.correctAnswer &&
+                                    (question.correctAnswer === '' ||
+                                        question.correctAnswer === null)
+                                "
+                                class="form-validate"
+                            >
+                                please enter a correct answer !
+                            </div>
+                        </div>
+                        <!-- If incorrect -->
+                        <div v-else>
+                            <input
+                                v-model="question.incorrectAnswer1"
+                                type="text"
+                                class="form-control"
+                            />
+                            <div
+                                v-if="
+                                    validate.incorrectAnswer1 &&
+                                    (question.incorrectAnswer1 === '' ||
+                                        question.incorrectAnswer1 === null)
+                                "
+                                class="form-validate"
+                            >
+                                please enter an answer option !
+                            </div>
                         </div>
                     </div>
+
+                    <!-- Answer Option 2 -->
+                    <label class="form-label"
+                        ><span v-if="isCorrect == 2">Correct answer</span>
+                        <span v-else>Incorrect answer</span>
+                    </label>
+                    <!-- isCorrect? -->
+                    <input
+                        class="ms-2 float-right"
+                        type="radio"
+                        v-model="isCorrect"
+                        value="2"
+                    />
                     <div class="mb-3">
-                        <label class="form-label">Wrong answer 1</label>
-                        <input
-                            v-model="question.incorrectAnswer1"
-                            type="text"
-                            class="form-control"
-                        />
-                        <div
-                            v-if="
-                                validate.incorrectAnswer1 &&
-                                (question.incorrectAnswer1 === '' ||
-                                    question.incorrectAnswer1 === null)
-                            "
-                            class="form-validate"
-                        >
-                            please enter incorrect answer 1 !
+                        <!-- If correct -->
+                        <div v-if="isCorrect == 2">
+                            <input
+                                v-model="question.correctAnswer"
+                                type="text"
+                                class="form-control"
+                            />
+                            <div
+                                v-if="
+                                    validate.correctAnswer &&
+                                    (question.correctAnswer === '' ||
+                                        question.correctAnswer === null)
+                                "
+                                class="form-validate"
+                            >
+                                please enter a correct answer !
+                            </div>
+                        </div>
+                        <!-- If incorrect -->
+                        <div v-else>
+                            <input
+                                v-model="question.incorrectAnswer2"
+                                type="text"
+                                class="form-control"
+                            />
+                            <div
+                                v-if="
+                                    validate.incorrectAnswer2 &&
+                                    (question.incorrectAnswer2 === '' ||
+                                        question.incorrectAnswer2 === null)
+                                "
+                                class="form-validate"
+                            >
+                                please enter an answer option !
+                            </div>
                         </div>
                     </div>
+
+                    <!-- Answer Option 3 -->
+                    <label class="form-label"
+                        ><span v-if="isCorrect == 3">Correct answer</span>
+                        <span v-else>Incorrect answer</span>
+                    </label>
+                    <!-- isCorrect? -->
+                    <input
+                        class="ms-2 float-right"
+                        type="radio"
+                        v-model="isCorrect"
+                        value="3"
+                    />
                     <div class="mb-3">
-                        <label class="form-label">Wrong answer 2</label>
-                        <input
-                            v-model="question.incorrectAnswer2"
-                            type="text"
-                            class="form-control"
-                        />
-                        <div
-                            v-if="
-                                validate.incorrectAnswer2 &&
-                                (question.incorrectAnswer2 === '' ||
-                                    question.incorrectAnswer2 === null)
-                            "
-                            class="form-validate"
-                        >
-                            please enter incorrect answer 2 !
+                        <!-- If correct -->
+                        <div v-if="isCorrect == 3">
+                            <input
+                                v-model="question.correctAnswer"
+                                type="text"
+                                class="form-control"
+                            />
+                            <div
+                                v-if="
+                                    validate.correctAnswer &&
+                                    (question.correctAnswer === '' ||
+                                        question.correctAnswer === null)
+                                "
+                                class="form-validate"
+                            >
+                                please enter a correct answer !
+                            </div>
+                        </div>
+                        <!-- If incorrect -->
+                        <div v-else>
+                            <input
+                                v-model="question.incorrectAnswer3"
+                                type="text"
+                                class="form-control"
+                            />
+                            <div
+                                v-if="
+                                    validate.incorrectAnswer3 &&
+                                    (question.incorrectAnswer3 === '' ||
+                                        question.incorrectAnswer3 === null)
+                                "
+                                class="form-validate"
+                            >
+                                please enter an answer option !
+                            </div>
                         </div>
                     </div>
+
+                    <!-- Answer Option 4 -->
+                    <label class="form-label"
+                        ><span v-if="isCorrect == 4">Correct answer</span>
+                        <span v-else>Incorrect answer</span>
+                    </label>
+                    <!-- isCorrect? -->
+                    <input
+                        class="ms-2 float-right"
+                        type="radio"
+                        v-model="isCorrect"
+                        value="4"
+                    />
                     <div class="mb-3">
-                        <label class="form-label">Wrong answer 3</label>
-                        <input
-                            v-model="question.incorrectAnswer3"
-                            type="text"
-                            class="form-control"
-                        />
-                        <div
-                            v-if="
-                                validate.incorrectAnswer3 &&
-                                (question.incorrectAnswer3 === '' ||
-                                    question.incorrectAnswer3 === null)
-                            "
-                            class="form-validate"
-                        >
-                            please enter incorrect answer 3 !
+                        <!-- If correct -->
+                        <div v-if="isCorrect == 4">
+                            <input
+                                v-model="question.correctAnswer"
+                                type="text"
+                                class="form-control"
+                            />
+                            <div
+                                v-if="
+                                    validate.correctAnswer &&
+                                    (question.correctAnswer === '' ||
+                                        question.correctAnswer === null)
+                                "
+                                class="form-validate"
+                            >
+                                please enter a correct answer !
+                            </div>
+                        </div>
+                        <!-- If incorrect -->
+                        <div v-else>
+                            <input
+                                v-model="question.incorrectAnswer4"
+                                type="text"
+                                class="form-control"
+                            />
+                            <div
+                                v-if="
+                                    validate.incorrectAnswer4 &&
+                                    (question.incorrectAnswer4 === '' ||
+                                        question.incorrectAnswer4 === null)
+                                "
+                                class="form-validate"
+                            >
+                                please enter an answer option !
+                            </div>
                         </div>
                     </div>
+
+                    <!-- Answer Option 5 -->
+                    <label class="form-label"
+                        ><span v-if="isCorrect == 5">Correct answer</span>
+                        <span v-else>Incorrect answer</span>
+                    </label>
+                    <!-- isCorrect? -->
+                    <input
+                        class="ms-2 float-right"
+                        type="radio"
+                        v-model="isCorrect"
+                        value="5"
+                    />
                     <div class="mb-3">
-                        <label class="form-label">Wrong answer 4</label>
-                        <input
-                            v-model="question.incorrectAnswer4"
-                            type="text"
-                            class="form-control"
-                        />
-                        <div
-                            v-if="
-                                validate.incorrectAnswer4 &&
-                                (question.incorrectAnswer4 === '' ||
-                                    question.incorrectAnswer4 === null)
-                            "
-                            class="form-validate"
-                        >
-                            please enter incorrect answer 4 !
+                        <!-- If correct -->
+                        <div v-if="isCorrect == 5">
+                            <input
+                                v-model="question.correctAnswer"
+                                type="text"
+                                class="form-control"
+                            />
+                            <div
+                                v-if="
+                                    validate.correctAnswer &&
+                                    (question.correctAnswer === '' ||
+                                        question.correctAnswer === null)
+                                "
+                                class="form-validate"
+                            >
+                                please enter a correct answer !
+                            </div>
+                        </div>
+                        <!-- If incorrect -->
+                        <div v-else>
+                            <input
+                                v-model="question.incorrectAnswer5"
+                                type="text"
+                                class="form-control"
+                            />
+                            <div
+                                v-if="
+                                    validate.incorrectAnswer5 &&
+                                    (question.incorrectAnswer5 === '' ||
+                                        question.incorrectAnswer5 === null)
+                                "
+                                class="form-validate"
+                            >
+                                please enter an answer option !
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <label class="control control-checkbox">
+                                <span class="ms-2">Randomize the order?</span>
+                                <input
+                                    type="checkbox"
+                                    value="true"
+                                    v-model="question.isRandomOrder"
+                                />
+                                <div class="control_indicator"></div>
+                            </label>
                         </div>
                     </div>
                     <div class="mb-3">
@@ -388,5 +581,109 @@ export default {
 .form-control:focus {
     border-color: white;
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 12px #a48be6;
+}
+
+/**-------------------------------------  */
+/* A lot of CSS styling for on check box */
+.control {
+    font-family: 'Poppins' sans-serif;
+    display: block;
+    position: relative;
+    padding-left: 30px;
+    margin-bottom: 5px;
+    padding-top: 3px;
+    cursor: pointer;
+}
+
+.control > span {
+    font-weight: 500;
+    font-size: 0.938rem;
+    color: #667085;
+    text-align: center;
+}
+.control input {
+    position: absolute;
+    z-index: -1;
+    opacity: 0;
+}
+.control_indicator {
+    position: absolute;
+    top: 2px;
+    left: 0;
+    height: 29.09px;
+    width: 29.09px;
+    background: #f9f5ff;
+    border: 1.45px solid #9c7eec;
+    border-radius: 8.73px;
+}
+.control:hover input ~ .control_indicator,
+.control input:focus ~ .control_indicator {
+    background: #e7ddf6;
+}
+
+.plus-svg:hover {
+    cursor: pointer;
+}
+.control input:checked ~ .control_indicator {
+    background: #f9f5ff;
+}
+.control:hover input:not([disabled]):checked ~ .control_indicator,
+.control input:checked:focus ~ .control_indicator {
+    background: #f9f5ff;
+}
+.control input:disabled ~ .control_indicator {
+    background: #e6e6e6;
+    opacity: 0.6;
+    pointer-events: none;
+}
+.control_indicator:after {
+    box-sizing: unset;
+    content: '';
+    position: absolute;
+    display: none;
+}
+.control input:checked ~ .control_indicator:after {
+    display: block;
+}
+.control-checkbox .control_indicator:after {
+    left: 4px;
+    top: 5px;
+    width: 13.58px;
+    height: 9.33px;
+    border: solid #9c7eec;
+    border-width: 0px 0px 2.9px 2.9px;
+    transform: rotate(-45deg);
+}
+.control-checkbox input:disabled ~ .control_indicator:after {
+    border-color: #7b7b7b;
+}
+.control-checkbox .control_indicator::before {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 4.5rem;
+    height: 4.5rem;
+    margin-left: -1.3rem;
+    margin-top: -1.3rem;
+    background: #9c7eec;
+    border-radius: 3rem;
+    opacity: 0.6;
+    z-index: 99999;
+    transform: scale(0);
+}
+
+.control-checkbox input + .control_indicator::before {
+    animation: s-ripple 250ms ease-out;
+}
+.control-checkbox input:checked + .control_indicator::before {
+    animation-name: s-ripple-dup;
+}
+/* End of check box styling */
+
+.form-check {
+    margin: 0px;
+    padding: 0px;
 }
 </style>
